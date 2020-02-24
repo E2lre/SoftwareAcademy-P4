@@ -1,0 +1,86 @@
+2020-02-24 10:09:33 [main] INFO  App:10 - Initializing Parking System
+2020-02-24 10:09:33 [main] INFO  InteractiveShell:14 - App initialized!!!
+2020-02-24 10:12:32 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:12:33 [main] INFO  DataBaseConfig:49 - Closing Result Set
+2020-02-24 10:12:33 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:12:33 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:12:50 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:12:50 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:12:50 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:12:50 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:12:50 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:12:56 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:12:56 [main] INFO  DataBaseConfig:49 - Closing Result Set
+2020-02-24 10:12:56 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:12:56 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:02 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:02 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:13:02 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:02 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:02 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:12 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:12 [main] INFO  DataBaseConfig:49 - Closing Result Set
+2020-02-24 10:13:12 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:13:12 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:12 [main] ERROR ParkingService:76 - Error fetching next available parking slot
+java.lang.Exception: Error fetching parking number from DB. Parking slots might be full
+	at com.parkit.parkingsystem.service.ParkingService.getNextParkingNumberIfAvailable(ParkingService.java:71) [classes/:?]
+	at com.parkit.parkingsystem.service.ParkingService.processIncomingVehicle(ParkingService.java:32) [classes/:?]
+	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:28) [classes/:?]
+	at com.parkit.parkingsystem.App.main(App.java:11) [classes/:?]
+2020-02-24 10:13:21 [main] ERROR InputReaderUtil:18 - Error while reading user input from Shell
+java.lang.NumberFormatException: For input string: "ev-506-ry"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65) ~[?:1.8.0_242]
+	at java.lang.Integer.parseInt(Integer.java:580) ~[?:1.8.0_242]
+	at java.lang.Integer.parseInt(Integer.java:615) ~[?:1.8.0_242]
+	at com.parkit.parkingsystem.util.InputReaderUtil.readSelection(InputReaderUtil.java:15) [classes/:?]
+	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:25) [classes/:?]
+	at com.parkit.parkingsystem.App.main(App.java:11) [classes/:?]
+2020-02-24 10:13:37 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:49 - Closing Result Set
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:13:38 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:49 - Closing Result Set
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:13:55 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:14:07 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:14:07 [main] INFO  DataBaseConfig:49 - Closing Result Set
+2020-02-24 10:14:07 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:14:07 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:14:07 [main] ERROR ParkingService:117 - Unable to process exiting vehicle
+java.lang.NullPointerException: null
+	at com.parkit.parkingsystem.service.ParkingService.processExitingVehicle(ParkingService.java:105) [classes/:?]
+	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:32) [classes/:?]
+	at com.parkit.parkingsystem.App.main(App.java:11) [classes/:?]
+2020-02-24 10:16:14 [main] ERROR InputReaderUtil:18 - Error while reading user input from Shell
+java.lang.NumberFormatException: For input string: ""
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65) ~[?:1.8.0_242]
+	at java.lang.Integer.parseInt(Integer.java:592) ~[?:1.8.0_242]
+	at java.lang.Integer.parseInt(Integer.java:615) ~[?:1.8.0_242]
+	at com.parkit.parkingsystem.util.InputReaderUtil.readSelection(InputReaderUtil.java:15) [classes/:?]
+	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:25) [classes/:?]
+	at com.parkit.parkingsystem.App.main(App.java:11) [classes/:?]
+2020-02-24 10:16:24 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-02-24 10:16:24 [main] INFO  DataBaseConfig:49 - Closing Result Set
+2020-02-24 10:16:24 [main] INFO  DataBaseConfig:38 - Closing Prepared Statement
+2020-02-24 10:16:24 [main] INFO  DataBaseConfig:27 - Closing DB connection
+2020-02-24 10:16:24 [main] ERROR ParkingService:117 - Unable to process exiting vehicle
+java.lang.NullPointerException: null
+	at com.parkit.parkingsystem.service.ParkingService.processExitingVehicle(ParkingService.java:105) [classes/:?]
+	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:32) [classes/:?]
+	at com.parkit.parkingsystem.App.main(App.java:11) [classes/:?]
+2020-02-24 15:28:32 [main] INFO  App:10 - Initializing Parking System
+2020-02-24 15:28:32 [main] INFO  InteractiveShell:14 - App initialized!!!
+2020-02-24 15:30:29 [main] INFO  App:10 - Initializing Parking System
+2020-02-24 15:30:29 [main] INFO  InteractiveShell:14 - App initialized!!!
