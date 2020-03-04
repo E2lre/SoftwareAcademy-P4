@@ -1,6 +1,7 @@
 package com.parkit.parkingsystem.integration;
 
-import com.parkit.parkingsystem.constants.Fare;
+//import com.parkit.parkingsystem.constants.Fare;
+import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
@@ -16,9 +17,15 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.junit.Assert.assertNotEquals;
+//import static org.junit.Assert.assertThat;
+//import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+
+import java.util.Date;
+
+import static org.assertj.core.api.Assertions.*;
+
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,21 +68,34 @@ public class ParkingDataBaseIT {
     public void testParkingACar(){
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+        //todo done: check that a ticket is actualy saved in DB and Parking table is updated with availability
+        
+        //check that a ticket is actualy saved in DB : get the car position. It must be 1
         Ticket ticket = new Ticket();
         ticket = ticketDAO.getTicket("ABCDEF");
-        System.out.println("ticket "+ticket.getId());
-        assertEquals(ticket.getId(), 1);
+        //System.out.println("ticket "+ticket.getId());
+        assertThat(ticket.getId()).isEqualTo(1);
+        
+        //Parking table is updated with availability : check if place 2 is free 
+               
+        //System.out.println("test next " + parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
+        assertThat(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).isEqualTo(2);
         
     }
 
     @Test
     public void testParkingLotExit(){
         System.out.println("start testParkingLotExit");
-    	testParkingACar();
+        long waitingTime = 5000; // Waiting time beteewn entry car and car out in miliseconds
+        
+        Date inTime = new Date();
+        //inTime.setTime( System.currentTimeMillis() + 2*waitingTime );
+
+        testParkingACar();
     	System.out.println("start wait");
+    	
         try {
-        Thread.sleep(60000);
+        	Thread.sleep(waitingTime); //Waiting for 30 seconds
         }
         catch (InterruptedException e){
         	logger.error(e.getMessage());
@@ -83,12 +103,16 @@ public class ParkingDataBaseIT {
         System.out.println("End wait");
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processExitingVehicle();
-        //TODO: check that the fare generated and out time are populated correctly in the database
+        //todo done: check that the fare generated and out time are populated correctly in the database
         Ticket ticket = new Ticket();
         ticket = ticketDAO.getTicket("ABCDEF");
         System.out.println("Test exit date " +ticket.getOutTime() + " price " + ticket.getPrice());
-        assertNotEquals(ticket.getPrice(), 0); //TODO E2lre A changer et compléter
-     
+       //out time are populated correctly in the database
+       //TODO E2lre : est on certain que le outime est correct ?
+        assertThat(ticket.getOutTime()).isAfter(inTime);
+        //check that the fare generated
+        //TODO :E2lre la durée est trop court pour être stable repasser à 10s ?
+        assertThat(ticket.getPrice()).isBetween(0.0015, 0.003);
     }
-
+  
 }
