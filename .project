@@ -20,4 +20,11 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/resources/log4j2.xml</name>
+			<type>1</type>
+			<location>C:/Devenv/git/P4/SoftwareAcademy-P4/src/main/resources/log4j2.xml</location>
+		</link>
+	</linkedResources>
 </projectDescription>

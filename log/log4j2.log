@@ -8102,3 +8102,4 @@ java.lang.IllegalArgumentException: Out time provided is incorrect:Mon Mar 02 18
 2020-03-04 10:53:30 [main] INFO  DataBaseTestConfig:27 - Closing DB connection
 2020-03-04 11:25:36 [main] INFO  App:10 - Initializing Parking System
 2020-03-04 11:25:36 [main] INFO  InteractiveShell:14 - App initialized!!!
+
