@@ -78,7 +78,6 @@ public class ParkingDataBaseIT {
         
         //Parking table is updated with availability : check if place 2 is free 
                
-        //System.out.println("test next " + parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR));
         assertThat(parkingSpotDAO.getNextAvailableSlot(ParkingType.CAR)).isEqualTo(2);
         
     }

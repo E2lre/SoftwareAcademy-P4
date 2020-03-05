@@ -5,28 +5,36 @@ import com.parkit.parkingsystem.model.Ticket;
 
 public class FareCalculatorService {
 
-    public void calculateFare(Ticket ticket){
-        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
-            throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
-        }
-    
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-        //E2lre : corrected
-        long inHour = ticket.getInTime().getTime();
-        long outHour = ticket.getOutTime().getTime();
-        float duration = (float)(outHour - inHour)/3600000;
+	public void calculateFare(Ticket ticket) {
+		if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
+			throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
+		}
 
-        
-        switch (ticket.getParkingSpot().getParkingType()){
-            case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-                break;
-            }
-            case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-                break;
-            }
-            default: throw new IllegalArgumentException("Unkown Parking Type");
-        }
-    }
+		// todo done: Some tests are failing here. Need to check if this logic is
+		// correct
+		// E2lre : corrected
+		long inHour = ticket.getInTime().getTime();
+		long outHour = ticket.getOutTime().getTime();
+		float duration = (float) (outHour - inHour) / 3600000;
+
+		// E2lre : add control : if duration is less than 30 minutes, park is free
+		if (duration <= 0.5) {
+			ticket.setPrice(0);
+		} 
+		else {
+			switch (ticket.getParkingSpot().getParkingType()) {
+			case CAR: {
+				ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+				break;
+			}
+			case BIKE: {
+				ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+				break;
+			}
+			default:
+				throw new IllegalArgumentException("Unkown Parking Type");
+			}
+		}
+
+	}
 }
