@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class DataBaseConfig {
 
@@ -12,11 +14,19 @@ public class DataBaseConfig {
     public Connection getConnection() throws ClassNotFoundException, SQLException {
         logger.info("Create DB connection");
         Class.forName("com.mysql.cj.jdbc.Driver");
+        
 /*        return DriverManager.getConnection(
                 "jdbc:mysql://localhost:3306/prod","root","rootroot"); //old value
 */
-		return DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/prod?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Europe/Paris","root","rootroot");	   
+		//E2lre : connexion string is store in a file config
+        ResourceBundle bundle = ResourceBundle.getBundle("com.parkit.parkingsystem.config.config");
+        String mysqlUrl = bundle.getString("mysql.urlprod");
+        String mysqlLogin = bundle.getString("mysql.login");
+        String mysqlPassword = bundle.getString("mysql.password");
+        return DriverManager.getConnection(mysqlUrl,mysqlLogin,mysqlPassword);
+        
+        //return DriverManager.getConnection(  //TODO El2re : a supprimer
+		//			"jdbc:mysql://localhost:3306/prod?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Europe/Paris","root","rootroot");	   
     
     }
 
