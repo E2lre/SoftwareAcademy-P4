@@ -1,5 +1,7 @@
 package com.parkit.parkingsystem;
 
+import java.util.Date;
+
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
@@ -9,9 +11,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Date;
+
 
 public class FareCalculatorServiceTest {
 

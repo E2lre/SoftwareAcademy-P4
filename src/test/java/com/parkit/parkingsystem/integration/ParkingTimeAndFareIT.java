@@ -1,20 +1,5 @@
 package com.parkit.parkingsystem.integration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.util.Date;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -25,6 +10,33 @@ import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+import java.util.Date;
+
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+/*
+import com.parkit.parkingsystem.constants.ParkingType;
+import com.parkit.parkingsystem.dao.ParkingSpotDAO;
+import com.parkit.parkingsystem.dao.TicketDAO;
+import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
+import com.parkit.parkingsystem.integration.service.DataBasePrepareService;
+import com.parkit.parkingsystem.model.ParkingSpot;
+import com.parkit.parkingsystem.model.Ticket;
+import com.parkit.parkingsystem.service.ParkingService;
+import com.parkit.parkingsystem.util.InputReaderUtil;
+*/
+
 @ExtendWith(MockitoExtension.class)
 public class ParkingTimeAndFareIT {
 
@@ -33,7 +45,7 @@ public class ParkingTimeAndFareIT {
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
     
-    private static final Logger logger = LogManager.getLogger("ParkingDataBaseIT");
+   //private static final Logger logger = LogManager.getLogger("ParkingDataBaseIT");
 
     @Mock
     private static InputReaderUtil inputReaderUtil;
