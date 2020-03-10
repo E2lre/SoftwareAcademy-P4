@@ -18,10 +18,9 @@ public class FareCalculatorService {
 		float duration = (float) (outHour - inHour) / 3600000;
 
 		// E2lre : add control : if duration is less than 30 minutes, park is free
-		if (duration <= 0.5) {
+		if (duration <= Fare.PARK_TIME_FREE) {
 			ticket.setPrice(0);
-		} 
-		else {
+		} else {
 			switch (ticket.getParkingSpot().getParkingType()) {
 			case CAR: {
 				ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
@@ -34,6 +33,11 @@ public class FareCalculatorService {
 			default:
 				throw new IllegalArgumentException("Unkown Parking Type");
 			}
+		}
+		if (ticket.getNumberEntry()>1) {
+			ticket.setPrice(ticket.getPrice()*Fare.RECURRING_FEE_BENEFIT);
+			System.out.println("As a recurring user of our parking lot, you benefit from a 5% discount");
+			
 		}
 
 	}

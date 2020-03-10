@@ -25,124 +25,130 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 @ExtendWith(MockitoExtension.class)
 public class ParkingTimeAndFareIT {
 
-    private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
-    private static ParkingSpotDAO parkingSpotDAO;
-    private static TicketDAO ticketDAO;
-    private static DataBasePrepareService dataBasePrepareService;
-    
-   //private static final Logger logger = LogManager.getLogger("ParkingDataBaseIT");
+	private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
+	private static ParkingSpotDAO parkingSpotDAO;
+	private static TicketDAO ticketDAO;
+	private static DataBasePrepareService dataBasePrepareService;
 
-    @Mock
-    private static InputReaderUtil inputReaderUtil;
-    
-    
-    @BeforeAll
-    private static void setUp() throws Exception{
-        parkingSpotDAO = new ParkingSpotDAO();
-        parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
-        ticketDAO = new TicketDAO();
-        ticketDAO.dataBaseConfig = dataBaseTestConfig;
-        dataBasePrepareService = new DataBasePrepareService();
-    }
+	// private static final Logger logger =
+	// LogManager.getLogger("ParkingDataBaseIT");
 
-    @BeforeEach
-    private void setUpPerTest() throws Exception {
-        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
-        dataBasePrepareService.clearDataBaseEntries();
-    }
+	@Mock
+	private static InputReaderUtil inputReaderUtil;
 
-    @AfterAll
-    private static void tearDown(){
+	@BeforeAll
+	private static void setUp() throws Exception {
+		parkingSpotDAO = new ParkingSpotDAO();
+		parkingSpotDAO.dataBaseConfig = dataBaseTestConfig;
+		ticketDAO = new TicketDAO();
+		ticketDAO.dataBaseConfig = dataBaseTestConfig;
+		dataBasePrepareService = new DataBasePrepareService();
+	}
 
-    }
+	@BeforeEach
+	private void setUpPerTest() throws Exception {
+		when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+		dataBasePrepareService.clearDataBaseEntries();
+	}
 
-  
-    public void testParkingACar10MinAgo(){
+	@AfterAll
+	private static void tearDown() {
 
-    	//Calculate the date 10 minutes ago : it will be the date of entry car
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  10 * 60 * 1000) );
+	}
 
-    	ParkingSpot parkingSpot = new ParkingSpot(1,ParkingType.CAR,true);
+	public void testParkingACar10MinAgo() {
 
-    	Ticket ticket = new Ticket();
-        ticket.setId(1);
-        ticket.setInTime(inTime);
-        ticket.setParkingSpot(parkingSpot);
-        ticket.setVehicleRegNumber("ABCDEF"); 
-        ticket.setOutTime(null);
-        ticket.setPrice(0);
-        ticketDAO.saveTicket(ticket);
-    
-    }
-  public void testParkingACar1HourAgo(){
+		// Calculate the date 10 minutes ago : it will be the date of entry car
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - (10 * 60 * 1000));
 
-    	//Calculate the date 10 minutes ago : it will be the date of entry car
-    	Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
 
-    	ParkingSpot parkingSpot = new ParkingSpot(1,ParkingType.CAR,true);
+		Ticket ticket = new Ticket();
+		ticket.setId(1);
+		ticket.setInTime(inTime);
+		ticket.setParkingSpot(parkingSpot);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setOutTime(null);
+		ticket.setPrice(0);
+		ticketDAO.saveTicket(ticket);
 
-    	Ticket ticket = new Ticket();
-        ticket.setId(1);
-        ticket.setInTime(inTime);
-        ticket.setParkingSpot(parkingSpot);
-        ticket.setVehicleRegNumber("ABCDEF"); 
-        ticket.setOutTime(null);
-        ticket.setPrice(0);
-        ticketDAO.saveTicket(ticket);
-         
-    }
-    @Test
-    public void testParkingLotExitLessThan30Min(){
-  
-    	System.out.println("start testParkingLotExitLessThan30Min");
-     
-        testParkingACar10MinAgo();
-        
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processExitingVehicle();
-        
-        Date outTime = new Date();
-        
-        //todo done: check that the fare generated and out time are populated correctly in the database
-        Ticket ticket = new Ticket();
-        ticket = ticketDAO.getTicket("ABCDEF");
-        System.out.println("Test exit date " +ticket.getOutTime() + " price " + ticket.getPrice());
-       //out time are populated correctly in the database for 10 minutes
-       //TODO E2lre : est on certain que le outime est correct si on déclenche le test à 59 secondes?
-        assertThat(ticket.getOutTime()).isEqualToIgnoringSeconds(outTime);
-        //check that the fare generated. it must be 0 
-        assertThat(ticket.getPrice()).isEqualTo(0);
-    }
-  
-    @Test
-    public void testParkingLotExitLessMore30Min(){
- 
-    	System.out.println("start testParkingLotExitLessMore30Min");
+	}
 
-        double minPrice = 1.49;
-        double maxPrice = 1.51;
-        
-        testParkingACar1HourAgo();
-        
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        parkingService.processExitingVehicle();
-        
-        Date outTime = new Date();
-        
-        //todo done: check that the fare generated and out time are populated correctly in the database
-        Ticket ticket = new Ticket();
-        ticket = ticketDAO.getTicket("ABCDEF");
-        System.out.println("Test exit date " +ticket.getOutTime() + " price " + ticket.getPrice());
-       //out time are populated correctly in the database for 1 hour
-       //TODO E2lre : est on certain que le outime est correct si on déclenche le test à 59 minutes?
-        assertThat(ticket.getOutTime()).isEqualToIgnoringSeconds(outTime);
-        //check that the fare generated
-        assertThat(ticket.getPrice()).isBetween(minPrice, maxPrice);
-    }
+	public void testParkingACar1HourAgo() {
+
+		// Calculate the date 1 hour ago : it will be the date of entry car
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
+
+		Ticket ticket = new Ticket();
+		ticket.setId(1);
+		ticket.setInTime(inTime);
+		ticket.setParkingSpot(parkingSpot);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setOutTime(null);
+		ticket.setPrice(0);
+		ticketDAO.saveTicket(ticket);
+
+	}
+
+	@Test
+	public void processExitingVehicle_aCarEnter10MinutesAgoAndExitNow_feeMustBeFreeAndOutTimePopulated() { //testParkingLotExitLessThan30Min() {
+
+		System.out.println("start testParkingLotExitLessThan30Min");
+		
+		//When
+		testParkingACar10MinAgo();
+
+		//Given
+		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		parkingService.processExitingVehicle();
+
+		//THEN
+		Date outTime = new Date();
+
+		// todo done: check that the fare generated and out time are populated correctly in the database
+		Ticket ticket = new Ticket();
+		//ticket = ticketDAO.getTicket("ABCDEF");
+		ticket = ticketDAO.getLastTicket("ABCDEF");
+		System.out.println("Test exit date " + ticket.getOutTime() + " price " + ticket.getPrice());
+		// out time are populated correctly in the database for 10 minutes
+		assertThat(ticket.getOutTime()).isEqualToIgnoringSeconds(outTime);
+		// check that the fare generated. it must be 0
+		assertThat(ticket.getPrice()).isEqualTo(0);
+	}
+
+	@Test
+	public void processExitingVehicle_aCarEnterMoreThan30MinutesAgoAndExitNow_feeMustBeNotFreeAndOutTimePopulated() {//testParkingLotExitLessMore30Min() {
+
+		System.out.println("start testParkingLotExitLessMore30Min");
+
+		double minPrice = 1.49;
+		double maxPrice = 1.51;
+		//WHEN
+		testParkingACar1HourAgo();
+
+		//GIVEN
+		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		parkingService.processExitingVehicle();
+
+		//THEN
+		Date outTime = new Date();
+
+		// todo done: check that the fare generated and out time are populated correctly
+		// in the database
+		Ticket ticket = new Ticket();
+		//ticket = ticketDAO.getTicket("ABCDEF");
+		ticket = ticketDAO.getLastTicket("ABCDEF");
+		System.out.println("Test exit date " + ticket.getOutTime() + " price " + ticket.getPrice());
+		// out time are populated correctly in the database for 1 hour
+		assertThat(ticket.getOutTime()).isEqualToIgnoringSeconds(outTime);
+		// check that the fare generated
+		assertThat(ticket.getPrice()).isBetween(minPrice, maxPrice);
+	}
 }

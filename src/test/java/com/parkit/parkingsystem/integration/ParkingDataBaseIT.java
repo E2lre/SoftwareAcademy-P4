@@ -64,14 +64,18 @@ public class ParkingDataBaseIT {
 	}
 
 	@Test
-	public void testParkingACar() {
+	public void processIncomingVehicle_aCarPark_idAndParkingTypeArePopulated() { //testParkingACar() {
+		
+		//WHEN
+		
+		//GIVEN
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.processIncomingVehicle();
 		// todo done: check that a ticket is actualy saved in DB and Parking table is
 		// updated with availability
 
-		// check that a ticket is actualy saved in DB : get the car position. It must be
-		// 1
+		//THEN
+		// check that a ticket is actualy saved in DB : get the car position. It must be 1
 		Ticket ticket = new Ticket();
 		ticket = ticketDAO.getTicket("ABCDEF");
 		// System.out.println("ticket "+ticket.getId());
@@ -84,14 +88,15 @@ public class ParkingDataBaseIT {
 	}
 
 	@Test
-	public void testParkingLotExit() {
+	public void processExitingVehicle_aCarGetOut_returnAFeeAndOutTimeIsPopulated() {//testParkingLotExit() {
 		System.out.println("start testParkingLotExit");
 		long waitingTime = 5000; // Waiting time beteewn entry car and car out in miliseconds
 
+		//WHEN
 		Date inTime = new Date();
 		// inTime.setTime( System.currentTimeMillis() + 2*waitingTime );
 
-		testParkingACar();
+		processIncomingVehicle_aCarPark_idAndParkingTypeArePopulated();
 		System.out.println("start wait");
 
 		try {
@@ -100,19 +105,20 @@ public class ParkingDataBaseIT {
 			logger.error(e.getMessage());
 		}
 		System.out.println("End wait");
+		
+		//GIVEN
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.processExitingVehicle();
-		// todo done: check that the fare generated and out time are populated correctly
-		// in the database
+		
+		//THEN
+		// todo done: check that the fare generated and out time are populated correctly in the database
 		Ticket ticket = new Ticket();
-		ticket = ticketDAO.getTicket("ABCDEF");
+		//ticket = ticketDAO.getTicket("ABCDEF");
+		ticket = ticketDAO.getLastTicket("ABCDEF");
 		System.out.println("Test exit date " + ticket.getOutTime() + " price " + ticket.getPrice());
 		// out time are populated correctly in the database
-		// TODO E2lre : est on certain que le outime est correct ?
 		assertThat(ticket.getOutTime()).isAfter(inTime);
 		// check that the fare generated
-		// TODO :E2lre la durée est trop court pour être stable repasser à 10s ?
-		// assertThat(ticket.getPrice()).isBetween(0.0015, 0.003);
 		// with story1 the reult will be 0 because 30 minutes free
 		assertThat(ticket.getPrice()).isEqualTo(0);
 	}

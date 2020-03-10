@@ -9,57 +9,56 @@ import java.util.ResourceBundle;
 
 public class DataBaseConfig {
 
-    private static final Logger logger = LogManager.getLogger("DataBaseConfig");
+	private static final Logger logger = LogManager.getLogger("DataBaseConfig");
 
-    public Connection getConnection() throws ClassNotFoundException, SQLException {
-        logger.info("Create DB connection");
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        
-/*        return DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/prod","root","rootroot"); //old value
-*/
-		//E2lre : connexion string is store in a file config
-        ResourceBundle bundle = ResourceBundle.getBundle("com.parkit.parkingsystem.config.config");
-        String mysqlUrl = bundle.getString("mysql.urlprod");
-        String mysqlLogin = bundle.getString("mysql.login");
-        String mysqlPassword = bundle.getString("mysql.password");
-        return DriverManager.getConnection(mysqlUrl,mysqlLogin,mysqlPassword);
-        
-        //return DriverManager.getConnection(  //TODO El2re : a supprimer
-		//			"jdbc:mysql://localhost:3306/prod?zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Europe/Paris","root","rootroot");	   
-    
-    }
+	public Connection getConnection() throws ClassNotFoundException, SQLException {
+		logger.info("Create DB connection");
+		Class.forName("com.mysql.cj.jdbc.Driver");
 
-    public void closeConnection(Connection con){
-        if(con!=null){
-            try {
-                con.close();
-                logger.info("Closing DB connection");
-            } catch (SQLException e) {
-                logger.error("Error while closing connection",e);
-            }
-        }
-    }
+		/*
+		 * return DriverManager.getConnection(
+		 * "jdbc:mysql://localhost:3306/prod","root","rootroot"); //old value
+		 */
+		// E2lre : connexion string is store in a file config in src\main\ressources
+		// directory
+		ResourceBundle bundle = ResourceBundle.getBundle("config");
+		String mysqlUrl = bundle.getString("mysql.urlprod");
+		String mysqlLogin = bundle.getString("mysql.login");
+		String mysqlPassword = bundle.getString("mysql.password");
+		return DriverManager.getConnection(mysqlUrl, mysqlLogin, mysqlPassword);
 
-    public void closePreparedStatement(PreparedStatement ps) {
-        if(ps!=null){
-            try {
-                ps.close();
-                logger.info("Closing Prepared Statement");
-            } catch (SQLException e) {
-                logger.error("Error while closing prepared statement",e);
-            }
-        }
-    }
+	}
 
-    public void closeResultSet(ResultSet rs) {
-        if(rs!=null){
-            try {
-                rs.close();
-                logger.info("Closing Result Set");
-            } catch (SQLException e) {
-                logger.error("Error while closing result set",e);
-            }
-        }
-    }
+	public void closeConnection(Connection con) {
+		if (con != null) {
+			try {
+				con.close();
+				logger.info("Closing DB connection");
+			} catch (SQLException e) {
+				logger.error("Error while closing connection", e);
+			}
+		}
+	}
+
+	public void closePreparedStatement(PreparedStatement ps) {
+		if (ps != null) {
+			try {
+				ps.close();
+				logger.info("Closing Prepared Statement");
+			} catch (SQLException e) {
+				logger.error("Error while closing prepared statement", e);
+			}
+		}
+	}
+
+	public void closeResultSet(ResultSet rs) {
+		if (rs != null) {
+			try {
+				rs.close();
+				logger.info("Closing Result Set");
+			} catch (SQLException e) {
+				logger.error("Error while closing result set", e);
+			}
+		}
+	}
 }

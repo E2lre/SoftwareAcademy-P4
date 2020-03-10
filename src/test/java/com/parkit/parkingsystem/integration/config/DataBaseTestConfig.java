@@ -16,9 +16,10 @@ public class DataBaseTestConfig extends DataBaseConfig {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		// return DriverManager.getConnection(
 		// "jdbc:mysql://localhost:3306/test","root","rootroot");
-		
-		// Modify by E2lre for database acces
-		ResourceBundle bundle = ResourceBundle.getBundle("com.parkit.parkingsystem.integration.config.config");
+
+		// E2lre : connexion string is store in a file config in src\main\ressources
+		// directory
+		ResourceBundle bundle = ResourceBundle.getBundle("config");
 		String mysqlUrl = bundle.getString("mysql.urltest");
 		String mysqlLogin = bundle.getString("mysql.login");
 		String mysqlPassword = bundle.getString("mysql.password");
