@@ -35,8 +35,8 @@ public class FareCalculatorService {
 			}
 		}
 		if (ticket.getNumberEntry()>1) {
-			ticket.setPrice(ticket.getPrice()*Fare.RECURRING_FEE_BENEFIT);
-			System.out.println("As a recurring user of our parking lot, you benefit from a 5% discount");
+			ticket.setPrice(ticket.getPrice()*(1-(Fare.RECURRING_FEE_BENEFIT)/100));
+			System.out.println("As a recurring user of our parking lot, you benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount");
 			
 		}
 

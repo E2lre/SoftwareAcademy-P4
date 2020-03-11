@@ -101,8 +101,8 @@ public class ParkRegularlyIT {
 	public void processExitingVehicle_aCarEnterAndExistYesterdayAndEnterToday_returnAFeeCalculateOnTheSecondEntryWithFeeDiscount() {//testCarEnterPreviously() {
 		// if a car is already enter, the fee must be calculate since the second entry, not the first and a discount fee's is present
 
-		double minPrice = 1.49 * 0.95;  
-		double maxPrice = 1.51 * 0.95;  
+		double minPrice = 1.49 * (1-(Fare.RECURRING_FEE_BENEFIT/100));  
+		double maxPrice = 1.51 * (1-(Fare.RECURRING_FEE_BENEFIT/100));  
 		//WHEN
 		testCarEnterAndExitYesterday();
 		testCarEnter1hourAgo();

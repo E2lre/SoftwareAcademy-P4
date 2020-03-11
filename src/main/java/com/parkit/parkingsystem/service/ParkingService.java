@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -52,7 +53,7 @@ public class ParkingService {
 				// EL2re : Adding detection for fee reduction
 				if (ticketDAO.numberOfTicket(vehicleRegNumber) > 1) {
 					System.out.println(
-							"Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
+							"Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
 				}
 			}
 
