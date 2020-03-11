@@ -62,6 +62,13 @@
 			<version>3.0.0</version>
 			<!-- <version>3.1.0</version> -->
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-project-info-reports-plugin -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>org.apache.maven.plugins</groupId> -->
+<!-- 		    <artifactId>maven-project-info-reports-plugin</artifactId> -->
+<!-- 		    <version>3.0.0</version> -->
+<!-- 		</dependency> -->
+
 		<!-- old <dependency> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-assembly-plugin</artifactId> 
 			<version>3.0.0</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
@@ -71,6 +78,13 @@
 			<version>3.15.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs-maven-plugin -->
+		<dependency>
+		    <groupId>com.github.spotbugs</groupId>
+		    <artifactId>spotbugs-maven-plugin</artifactId>
+		    <version>3.1.12.2</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-site-plugin -->
 <!-- 		<dependency> -->
 <!-- 			<groupId>org.apache.maven.plugins</groupId> -->
@@ -85,9 +99,15 @@
 			<plugin>
 				<groupId>com.github.spotbugs</groupId>
 				<artifactId>spotbugs-maven-plugin</artifactId>
-				<version>3.1.8</version>
+				<version>3.1.12.2</version>
 				<configuration>
 					<failOnError>false</failOnError>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>findbugs-maven-plugin</artifactId>
+						</plugin>
+					</reportPlugins>
 				</configuration>
 			</plugin>
 <!-- 			<plugin>
@@ -106,19 +126,38 @@
 	</reporting>
 	<build>
 	<plugins>
+	
+<!-- 		<plugin> -->
+<!-- 			<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 			<artifactId>maven-site-plugin</artifactId> -->
+<!-- 			<configuration> -->
+<!-- 				<reportPlugins> -->
+<!-- 					<plugin> -->
+<!-- 						<groupId>org.codehaus.mojo</groupId> -->
+<!-- 						<artifactId>findbugs-maven-plugin</artifactId> -->
+<!-- 					</plugin> -->
+<!-- 				</reportPlugins> -->
+<!-- 			</configuration> -->
+<!-- 		</plugin> -->
+
+        <plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-project-info-reports-plugin</artifactId>
+<!-- 		    <version>3.0.0</version> -->
+		    <version>2.9</version>
+		</plugin>
 		<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-site-plugin</artifactId>
+			<groupId>com.github.spotbugs</groupId>
+			<artifactId>spotbugs-maven-plugin</artifactId>
+			<version>3.1.12.2</version>
 			<configuration>
-				<reportPlugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>findbugs-maven-plugin</artifactId>
-					</plugin>
-				</reportPlugins>
+<!-- 				<outputDirectory>${project.build.directory}/findbugs</outputDirectory> -->
+<!--                 <xmlOutput>true</xmlOutput> -->
+<!--                 <findbugsXmlWithMessages>true</findbugsXmlWithMessages> -->
+<!--                 <xmlOutputDirectory>target/findbugs</xmlOutputDirectory> -->
+                <failOnError>false</failOnError>
 			</configuration>
 		</plugin>
-
 		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -166,8 +205,8 @@
 						<goals>
 							<goal>test</goal>
 						</goals>
-<!-- 						<phase>integration-test</phase> -->
-						<phase>test</phase>
+						<phase>integration-test</phase>
+<!-- 						<phase>test</phase> -->
 						<configuration>
 							<excludes>
 								<exclude>none</exclude>

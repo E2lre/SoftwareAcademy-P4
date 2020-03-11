@@ -3,18 +3,18 @@ Echo ****************************Clean****************************
 Echo
 mvn clean
 Echo
-Echo ****************************Package****************************
+Echo ****************************Verify****************************
 Echo
-mvn package --quiet
+mvn verify --quiet
 Echo
 Echo ****************************Surfire****************************
 Echo
 mvn surefire-report:report
-#Echo
-#Echo ****************************Jacoco****************************
-#Echo
-#mvn jacoco:report
+Echo
+Echo ****************************Jacoco****************************
+Echo
+mvn jacoco:report
 Echo
 Echo ****************************Spotbugs****************************
 Echo
-mvn site -quiet
+mvn site --quiet
