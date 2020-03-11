@@ -23,6 +23,7 @@ public class TicketDAO {
 		Connection con = null;
 		try {
 			con = dataBaseConfig.getConnection();
+			
 			PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);
 			// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
 			// ps.setInt(1,ticket.getId());
@@ -34,12 +35,14 @@ public class TicketDAO {
 			return ps.execute();
 		} catch (Exception ex) {
 			logger.error("Error fetching next available slot", ex);
+			return false;//E2lre to avoid return on finally
 		} finally {
 			dataBaseConfig.closeConnection(con);
-			return false;
+			//return false;//E2lre to avoid return on finally
 		}
 	}
-
+ 
+	//TODO : E2lre : GetTicket DEPRECADED ?
 	public Ticket getTicket(String vehicleRegNumber) {
 		Connection con = null;
 		Ticket ticket = null;

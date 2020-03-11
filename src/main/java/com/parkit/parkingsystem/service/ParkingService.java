@@ -53,7 +53,6 @@ public class ParkingService {
 				if (ticketDAO.numberOfTicket(vehicleRegNumber) > 1) {
 					System.out.println(
 							"Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
-
 				}
 			}
 
@@ -76,6 +75,7 @@ public class ParkingService {
 			if (parkingNumber > 0) {
 				parkingSpot = new ParkingSpot(parkingNumber, parkingType, true);
 			} else {
+				System.out.println("*** Parking slots might be full ***");
 				throw new Exception("Error fetching parking number from DB. Parking slots might be full");
 			}
 		} catch (IllegalArgumentException ie) {

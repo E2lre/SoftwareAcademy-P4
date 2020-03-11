@@ -5,7 +5,7 @@ mvn clean
 Echo
 Echo ****************************Package****************************
 Echo
-mvn package
+mvn package --quiet
 Echo
 Echo ****************************Surfire****************************
 Echo
@@ -17,4 +17,4 @@ mvn jacoco:report
 Echo
 Echo ****************************Spotbugs****************************
 Echo
-mvn site
+mvn site --quiet
