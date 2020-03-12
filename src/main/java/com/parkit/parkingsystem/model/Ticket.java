@@ -45,19 +45,36 @@ public class Ticket {
 	}
 
 	public Date getInTime() {
-		return inTime;
+		Date localDate = inTime;
+		return localDate;
 	}
 
 	public void setInTime(Date inTime) {
-		this.inTime = inTime;
+		//E2lre : protection if intime is null
+		if (inTime == null) {
+			this.inTime = null;
+		}
+		else {
+			this.inTime = new Date(inTime.getTime());
+		}
+
+		//this.inTime = new Date(inTime.getTime());
 	}
 
 	public Date getOutTime() {
-		return outTime;
+		Date localDate = outTime;
+		return localDate;
+//		return outTime;
 	}
 
 	public void setOutTime(Date outTime) {
-		this.outTime = outTime;
+		//E2lre : the outime is null when a vehicule enter
+		if (outTime == null) {
+			this.outTime = null;
+		}
+		else {
+			this.outTime = new Date(outTime.getTime());
+		}
 	}
 	
 	//E2lre add for fee reduction management	

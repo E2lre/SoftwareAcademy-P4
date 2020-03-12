@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem;
 
+import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -83,7 +84,7 @@ public class ParkingServiceTest {
 		parkingService.processIncomingVehicle();
 		
 		//THEN 
-		assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
+		assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
 	}
 	
 	//add test El2re

@@ -1,12 +1,12 @@
 Echo
 Echo ****************************Clean****************************
 Echo
-mvn clean
+mvn clean --quiet
 Echo
 Echo ****************************Verify****************************
 Echo
-mvn verify 
+mvn verify --quiet
 Echo
 Echo ****************************Spotbugs****************************
 Echo
-mvn site 
+mvn site --quiet

@@ -77,7 +77,9 @@ public class ParkingDataBaseIT {
 		//THEN
 		// check that a ticket is actualy saved in DB : get the car position. It must be 1
 		Ticket ticket = new Ticket();
-		ticket = ticketDAO.getTicket("ABCDEF");
+		//ticket = ticketDAO.getTicket("ABCDEF"); // E2lre : getTicket change in getLastTicket
+		ticket = ticketDAO.getLastTicket("ABCDEF");
+		
 		// System.out.println("ticket "+ticket.getId());
 		assertThat(ticket.getId()).isEqualTo(1);
 

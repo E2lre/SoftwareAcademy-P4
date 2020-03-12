@@ -2,16 +2,20 @@ package com.parkit.parkingsystem.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.Scanner;
-
+import java.nio.charset.StandardCharsets;
 public class InputReaderUtil {
 
-	private static Scanner scan = new Scanner(System.in);
+	private static Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
 	private static final Logger logger = LogManager.getLogger("InputReaderUtil");
 
+	
 	public int readSelection() {
 		try {
+	
+			//E2LRE add new declaration of scanner
+//			UtilScan scan = new UtilScan();
+
 			int input = Integer.parseInt(scan.nextLine());
 			return input;
 		} catch (Exception e) {
@@ -23,6 +27,10 @@ public class InputReaderUtil {
 
 	public String readVehicleRegistrationNumber() throws Exception {
 		try {
+
+			//E2LRE add new declaration of scanner
+//			UtilScan scan = new UtilScan();
+
 			String vehicleRegNumber = scan.nextLine();
 			if (vehicleRegNumber == null || vehicleRegNumber.trim().length() == 0) {
 				throw new IllegalArgumentException("Invalid input provided");
