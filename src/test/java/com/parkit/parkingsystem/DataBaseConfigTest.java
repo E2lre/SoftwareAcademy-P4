@@ -1,7 +1,5 @@
 package com.parkit.parkingsystem;
 
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
@@ -12,15 +10,16 @@ import static org.assertj.core.api.Assertions.*;
 import com.parkit.parkingsystem.config.DataBaseConfig;
 import com.parkit.parkingsystem.constants.DBConstants;
 
-
-
 public class DataBaseConfigTest {
 	@Test
-	public void  processOpenCloseConnectionTest() {
+	public void  getConnection_processOpenCloseConnection_catalogIsProd() {
 		DataBaseConfig dataBaseConfig = new DataBaseConfig();
 		Connection con = null;
 		PreparedStatement ps = null;
 		String catalog = null;
+		//GIVEN
+		
+		//WHEN
 		try{
 			con = dataBaseConfig.getConnection();
 			catalog = con.getCatalog();
@@ -33,6 +32,7 @@ public class DataBaseConfigTest {
 			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 		}
+		//THEN
 		assertThat(catalog).contains("prod");
 	}
 

@@ -14,7 +14,6 @@ public class InputReaderUtil {
 		try {
 	
 			//E2LRE add new declaration of scanner
-//			UtilScan scan = new UtilScan();
 
 			int input = Integer.parseInt(scan.nextLine());
 			return input;
@@ -29,7 +28,6 @@ public class InputReaderUtil {
 		try {
 
 			//E2LRE add new declaration of scanner
-//			UtilScan scan = new UtilScan();
 
 			String vehicleRegNumber = scan.nextLine();
 			if (vehicleRegNumber == null || vehicleRegNumber.trim().length() == 0) {

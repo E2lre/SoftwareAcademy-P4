@@ -46,10 +46,8 @@ public class ParkingServiceTest {
 			ticket.setParkingSpot(parkingSpot);
 			ticket.setVehicleRegNumber("ABCDEF");
 			
-			//when(ticketDAO.getTicket(anyString())).thenReturn(ticket); //E2lre : getTicket is deprecated
 			lenient().when(ticketDAO.getLastTicket(anyString())).thenReturn(ticket); // E2lre : lenient is used to avoid duplicate code on ticket Class on test method
 			
-	
 			lenient().when(parkingSpotDAO.updateParking(any(ParkingSpot.class))).thenReturn(true);// E2lre : lenient is used to avoid duplicate code in two test method
 
 			parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
@@ -61,26 +59,47 @@ public class ParkingServiceTest {
 	}
 
 	@Test
-	public void  processExitingVehicleTest() {
-
+	public void  processExitingVehicle_vehiculeExiting_updateIsCallOneTime() {
+		//GIVEN
 		when(ticketDAO.updateTicket(any(Ticket.class))).thenReturn(true);
 
+		//WHEN
 		parkingService.processExitingVehicle();
+		
+		//THEN
 		verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
 	}
 
 	//add test El2re
 	@Test
-	public void IncomingVehicle_ACarAlreadyEnter_messageSended () {
+	public void IncomingVehicle_aBikeAlreadyEnter_messageSended () {
 		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	    System.setOut(new PrintStream(outContent));
 		
-	    //WHEN
+	    //GIVEN
 	    when(ticketDAO.numberOfTicket(any(String.class))).thenReturn(2); //E2lre add for incoming 2 times for a car
 		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1); //E2lre add for incoming 2 times for a car
-		when(inputReaderUtil.readSelection()).thenReturn(2); //E2lre add for incoming 2 times for a car //return a bike
+		when(inputReaderUtil.readSelection()).thenReturn(2); //E2lre add for incoming 2 times for a bike
 
-		//GIVEN		
+		//WHEN		
+		parkingService.processIncomingVehicle();
+		
+		//THEN 
+		assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
+	}
+	
+	//add test El2re
+	@Test
+	public void IncomingVehicle_aCarAlreadyEnter_messageSended () {
+		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	    System.setOut(new PrintStream(outContent));
+		
+	    //GIVEN
+	    when(ticketDAO.numberOfTicket(any(String.class))).thenReturn(2); //E2lre add for incoming 2 times for a car
+		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1); //E2lre add for incoming 2 times for a car
+		when(inputReaderUtil.readSelection()).thenReturn(1); //E2lre add for incoming 2 times for a car
+
+		//WHEN		
 		parkingService.processIncomingVehicle();
 		
 		//THEN 
@@ -93,11 +112,11 @@ public class ParkingServiceTest {
 		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	    System.setOut(new PrintStream(outContent));
 		
-	    //WHEN
+	    //GIVEN
 		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(0); //E2lre add for incoming 2 times for a car
 		when(inputReaderUtil.readSelection()).thenReturn(2); //E2lre add for incoming 2 times for a bike //return a bike
 
-		//GIVEN		
+		//WHEN		
 		parkingService.getNextParkingNumberIfAvailable();
 		//THEN
 		assertThat(outContent.toString()).contains("Parking slots might be full");
@@ -109,13 +128,14 @@ public class ParkingServiceTest {
 		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	    System.setOut(new PrintStream(outContent));
 		
-	    //WHEN
-		//when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(0); //E2lre add for incoming 2 times for a car
+	    //GIVEN
 	    when(inputReaderUtil.readSelection()).thenReturn(3); //E2lre unknown vehicule type is send
 
-		//GIVEN		
+		//WHEN		
 		parkingService.getNextParkingNumberIfAvailable();
 		//THEN
 		assertThat(outContent.toString()).contains("Incorrect input provided");
 	}
+	
+
 }

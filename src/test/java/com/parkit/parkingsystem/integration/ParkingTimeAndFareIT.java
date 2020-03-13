@@ -33,8 +33,6 @@ public class ParkingTimeAndFareIT {
 	private static TicketDAO ticketDAO;
 	private static DataBasePrepareService dataBasePrepareService;
 
-	// private static final Logger logger =
-	// LogManager.getLogger("ParkingDataBaseIT");
 
 	@Mock
 	private static InputReaderUtil inputReaderUtil;
@@ -98,14 +96,14 @@ public class ParkingTimeAndFareIT {
 	}
 
 	@Test
-	public void processExitingVehicle_aCarEnter10MinutesAgoAndExitNow_feeMustBeFreeAndOutTimePopulated() { //testParkingLotExitLessThan30Min() {
-
+	public void processExitingVehicle_aCarEnter10MinutesAgoAndExitNow_feeMustBeFreeAndOutTimePopulated() { 
+		
 		System.out.println("start testParkingLotExitLessThan30Min");
 		
-		//When
+		//GIVEN
 		testParkingACar10MinAgo();
 
-		//Given
+		//WHEN
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.processExitingVehicle();
 
@@ -124,24 +122,23 @@ public class ParkingTimeAndFareIT {
 	}
 
 	@Test
-	public void processExitingVehicle_aCarEnterMoreThan30MinutesAgoAndExitNow_feeMustBeNotFreeAndOutTimePopulated() {//testParkingLotExitLessMore30Min() {
+	public void processExitingVehicle_aCarEnterMoreThan30MinutesAgoAndExitNow_feeMustBeNotFreeAndOutTimePopulated() {
 
 		System.out.println("start testParkingLotExitLessMore30Min");
 
 		double minPrice = 1.49;
 		double maxPrice = 1.51;
-		//WHEN
+		//GIVEN
 		testParkingACar1HourAgo();
 
-		//GIVEN
+		//WHEN
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
 		parkingService.processExitingVehicle();
 
 		//THEN
 		Date outTime = new Date();
 
-		// todo done: check that the fare generated and out time are populated correctly
-		// in the database
+		// todo done: check that the fare generated and out time are populated correctly in the database
 		Ticket ticket = new Ticket();
 		//ticket = ticketDAO.getTicket("ABCDEF");
 		ticket = ticketDAO.getLastTicket("ABCDEF");

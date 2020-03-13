@@ -228,7 +228,9 @@
 			        <!-- Excludes integration tests when unit tests are run. -->
 					<excludes>
 						<exclude>**/*IT.java</exclude>
-					</excludes>
+						<exclude>*com/parkit/parkingsystem/dao/**/*</exclude>
+			            <exclude>*com/parkit/parkingsystem/App.java</exclude>
+			        </excludes>
 				</configuration>
 				<executions> 
 <!-- 					<execution> -->
@@ -299,13 +301,14 @@
 			                <goal>report</goal>
 			            </goals>
 			            <configuration>
+			            	<title>${project.name} : Tests unitaires</title>
 			                <!-- Sets the path to the file which contains the execution data. -->
 			                <dataFile>${project.build.directory}/jacoco-ut.exec</dataFile>
 			                <!-- Sets the output directory for the code coverage report. -->
 			                <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
 			            </configuration>
 			        </execution>
-					<!-- ajoute pour integ -->
+					<!-- ajout pour integ -->
 					<execution>
 						<id>jacoco-integration</id>
 						<goals>
@@ -346,6 +349,7 @@
 			                <goal>report</goal>
 			            </goals>
 			            <configuration>
+			            	<title>${project.name} : Tests d'intégration</title>
 			                <!-- Sets the path to the file which contains the execution data. -->
 			                <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
 			                <!-- Sets the output directory for the code coverage report. -->
@@ -378,6 +382,7 @@
 					    <goal>report</goal>
 					  </goals>
 					  <configuration>
+					    <title>${project.name} : Fusion tests unitaires et d'intégration</title>
 					    <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
 					    <outputDirectory>${project.reporting.outputDirectory}/jacoco-merged</outputDirectory>
 					  </configuration>

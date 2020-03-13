@@ -1,6 +1,5 @@
 package com.parkit.parkingsystem.model;
 
-//TODO E2LRE a retirer import java.util.Calendar;
 import java.util.Date;
 
 public class Ticket {
