@@ -111,14 +111,16 @@ public class ParkingDataBaseIT {
 		ticket = ticketDAO.getLastTicket("ABCDEF");
 		// out time are populated correctly in the database
 		assertThat(ticket.getOutTime()).isAfter(inTime);
-		// check that the fare generated with story1 the reult will be 0 because 30 minutes free
+		// check that the fare generated with story1 the result will be 0 because 30 minutes free
 		assertThat(ticket.getPrice()).isEqualTo(0);
+		//TODO  Ajouter teste date non nulle et heure de sortie
 	}
 	
 	@Test
 	public void processExitingVehicle_aCarGetOut_returnAFeeAndOutTimeIsPopulatedByMock() {
 
-		//GIVEN
+		//GIVEN 
+		//TODO : injection en base
 		Date inTime = new Date();
 		inTime.setTime(System.currentTimeMillis() - (10 * 60 * 1000)); //Car entry 10 minutes ago
 		processIncomingVehicle_aCarPark_idAndParkingTypeArePopulatedByMock(inTime);
@@ -135,6 +137,7 @@ public class ParkingDataBaseIT {
 		assertThat(ticket.getOutTime()).isAfter(inTime);
 		// check that the fare generated with story1 the reult will be 0 because 30 minutes free
 		assertThat(ticket.getPrice()).isEqualTo(0);
+		//TODO  Ajouter teste date non nulle et heure de sortie
 	}
 	public void processIncomingVehicle_aCarPark_idAndParkingTypeArePopulatedByMock(Date inTime) { 
 		

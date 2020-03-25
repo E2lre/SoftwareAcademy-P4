@@ -30,11 +30,12 @@ public class TicketDAO {
 	
 	public boolean saveTicket(Ticket ticket) {
 		Connection con = null;
+		PreparedStatement ps = null;
 		try {
 			con = dataBaseConfig.getConnection();
-				PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);
+			ps = con.prepareStatement(DBConstants.SAVE_TICKET);
 				// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-			try {
+	//		try {
 				ps.setInt(1, ticket.getParkingSpot().getId());
 				ps.setString(2, ticket.getVehicleRegNumber());
 				ps.setDouble(3, ticket.getPrice());
@@ -42,23 +43,24 @@ public class TicketDAO {
 				ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
 				ps.execute();
 				return true;
-			} catch (Exception ex) {
-				logger.error("Error fetching next available slot on ps execute", ex);
-				return false;//E2lre to avoid return on finally
-			} finally {
-				ps.close();
-			}
+//			} catch (Exception ex) {
+//				logger.error("Error fetching next available slot on ps execute", ex);
+//				return false;//E2lre to avoid return on finally
+//			} finally {
+//				ps.close();
+//			}
 		} catch (Exception ex) {
 			logger.error("Error fetching next available slot", ex);
 			return false;//E2lre to avoid return on finally
 		} finally {
+			dataBaseConfig.closePreparedStatement(ps);
 			dataBaseConfig.closeConnection(con);
 			//return false;//E2lre to avoid return on finally
 		}
 	}
  
 
-
+//TODO try catch close
 	// E2lre add for testing
 	public Ticket getLastTicket(String vehicleRegNumber) {
 		Connection con = null;

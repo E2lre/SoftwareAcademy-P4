@@ -78,7 +78,8 @@ public class FareCalculatorServiceTest {
 		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
 		
-		//WHEN //THEN
+		//WHEN 
+		//THEN
 		assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket));
 	}
 
@@ -93,7 +94,8 @@ public class FareCalculatorServiceTest {
 		ticket.setInTime(inTime);
 		ticket.setOutTime(outTime);
 		ticket.setParkingSpot(parkingSpot);
-		//WHEN //THEN
+		//WHEN 
+		//THEN
 		assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket));
 	}
 
