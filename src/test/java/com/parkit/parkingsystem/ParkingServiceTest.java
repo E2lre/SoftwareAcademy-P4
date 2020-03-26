@@ -72,25 +72,42 @@ public class ParkingServiceTest {
 
 	//add test El2re
 	@Test
-	public void IncomingVehicle_aBikeAlreadyEnter_messageSended () {
+	public void IncomingVehicle_aBikeAlreadyEnter_discountMessageSended () {
 		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	    System.setOut(new PrintStream(outContent));
 		
 	    //GIVEN
-	    when(ticketDAO.numberOfTicket(any(String.class))).thenReturn(2); //E2lre add for incoming 2 times for a car
+	    when(ticketDAO.numberOfTicket(any(String.class))).thenReturn(2); //E2lre add for incoming 2 times for a bike
 		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1); //E2lre add for incoming 2 times for a car
 		when(inputReaderUtil.readSelection()).thenReturn(2); //E2lre add for incoming 2 times for a bike
 
 		//WHEN		
 		parkingService.processIncomingVehicle();
-		
+		 
 		//THEN 
-		assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
+		assertThat(parkingService.getReduction()).isTrue();
+		//assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
 	}
-	
 	//add test El2re
 	@Test
-	public void IncomingVehicle_aCarAlreadyEnter_messageSended () {
+	public void IncomingVehicle_aBikeNeverEnter_noDiscount () {
+		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	    System.setOut(new PrintStream(outContent));
+		
+	    //GIVEN
+	    when(ticketDAO.numberOfTicket(any(String.class))).thenReturn(1); //E2lre add for incoming 1 time for a car
+		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1); //E2lre add for incoming 1 times for a car
+		when(inputReaderUtil.readSelection()).thenReturn(2); //E2lre add for incoming 1 times for a bike
+
+		//WHEN		
+		parkingService.processIncomingVehicle();
+		
+		//THEN 
+		assertThat(parkingService.getReduction()).isFalse();
+		}	
+	//add test El2re
+	@Test
+	public void IncomingVehicle_aCarAlreadyEnter_discountMessageSended () {
 		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	    System.setOut(new PrintStream(outContent));
 		
@@ -103,9 +120,26 @@ public class ParkingServiceTest {
 		parkingService.processIncomingVehicle();
 		
 		//THEN 
-		assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
+		assertThat(parkingService.getReduction()).isTrue();
+		//assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
 	}
-	
+	//add test El2re
+	@Test
+	public void IncomingVehicle_aCarNeverEnter_noDiscount () {
+		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	    System.setOut(new PrintStream(outContent));
+		
+	    //GIVEN
+	    when(ticketDAO.numberOfTicket(any(String.class))).thenReturn(1); //E2lre add for incoming 1 time for a car
+		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1); //E2lre add for incoming 1 time for a car
+		when(inputReaderUtil.readSelection()).thenReturn(1); //E2lre add for incoming 1 time for a car
+
+		//WHEN		
+		parkingService.processIncomingVehicle();
+		
+		//THEN 
+		assertThat(parkingService.getReduction()).isFalse();
+		}	
 	//add test El2re
 	@Test
 	public void getNextParkingNumberIfAvailable_parkingFull_errorMessageSended () {

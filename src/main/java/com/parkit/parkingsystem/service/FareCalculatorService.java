@@ -17,7 +17,7 @@ public class FareCalculatorService {
 		float duration = (float) (outHour - inHour) / 3600000;
 
 		// E2lre : add control : if duration is less than 30 minutes, park is free
-		if (duration <= Fare.PARK_TIME_FREE) {
+		if (duration < Fare.PARK_TIME_FREE) {
 			ticket.setPrice(0);
 		} else {
 			switch (ticket.getParkingSpot().getParkingType()) {

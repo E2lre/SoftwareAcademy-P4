@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.integration;
 
+import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -103,15 +104,20 @@ public class ParkingTimeAndFareIT {
 		//GIVEN
 		testParkingACar10MinAgo();
 
-		//WHEN
+
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+
+		//WHEN
 		parkingService.processExitingVehicle();
 
-		//THEN
+
 		Date outTime = new Date();
 
 		// todo done: check that the fare generated and out time are populated correctly in the database
 		Ticket ticket = new Ticket();
+		
+		
+		//THEN
 		//ticket = ticketDAO.getTicket("ABCDEF");
 		ticket = ticketDAO.getLastTicket("ABCDEF");
 		System.out.println("Test exit date " + ticket.getOutTime() + " price " + ticket.getPrice());
@@ -122,7 +128,7 @@ public class ParkingTimeAndFareIT {
 	}
 
 	@Test
-	public void processExitingVehicle_aCarEnterMoreThan30MinutesAgoAndExitNow_feeMustBeNotFreeAndOutTimePopulated() {
+	public void processExitingVehicle_aCarEnter1HourAgoAndExitNow_feeMustBeNotFreeAndOutTimePopulated() {
 
 		System.out.println("start testParkingLotExitLessMore30Min");
 
@@ -131,15 +137,17 @@ public class ParkingTimeAndFareIT {
 		//GIVEN
 		testParkingACar1HourAgo();
 
-		//WHEN
+
 		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		//WHEN
 		parkingService.processExitingVehicle();
 
-		//THEN
+
 		Date outTime = new Date();
 
 		// todo done: check that the fare generated and out time are populated correctly in the database
 		Ticket ticket = new Ticket();
+		//THEN
 		//ticket = ticketDAO.getTicket("ABCDEF");
 		ticket = ticketDAO.getLastTicket("ABCDEF");
 		System.out.println("Test exit date " + ticket.getOutTime() + " price " + ticket.getPrice());
@@ -148,4 +156,94 @@ public class ParkingTimeAndFareIT {
 		// check that the fare generated
 		assertThat(ticket.getPrice()).isBetween(minPrice, maxPrice);
 	}
+	
+	//============================= CHECK DISCOUNT ===========================================//
+	public void testCarEnter1hourAgo() {
+		System.out.println("testCarEnter1hourAgo start");
+		// A Car enter one hour ago
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
+
+		Ticket ticket = new Ticket();
+		ticket.setId(1);
+		ticket.setInTime(inTime);
+		ticket.setParkingSpot(parkingSpot);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setOutTime(null);
+		ticket.setPrice(Fare.CAR_RATE_PER_HOUR);
+		ticketDAO.saveTicket(ticket);
+
+	}
+
+	public void testCarEnterAndExitYesterday() {
+		System.out.println("testCarEnterAndExitYesterday start");
+		// A Car enter and exit parking yesterday
+		Date inTime = new Date();
+		inTime.setTime(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
+		Date outTime = new Date();
+		outTime.setTime(System.currentTimeMillis() - (23 * 60 * 60 * 1000));
+
+		ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
+
+		Ticket ticket = new Ticket();
+		ticket.setId(1);
+		ticket.setInTime(inTime);
+		ticket.setParkingSpot(parkingSpot);
+		ticket.setVehicleRegNumber("ABCDEF");
+		ticket.setOutTime(outTime);
+		ticket.setPrice(Fare.CAR_RATE_PER_HOUR);
+		ticketDAO.saveTicket(ticket);
+
+	}
+
+	@Test
+	public void processExitingVehicle_aCarEnterAndExistYesterdayAndEnterToday_returnAFeeCalculateOnTheSecondEntryWithFeeDiscount() {
+		// if a car is already enter, the fee must be calculate since the second entry, not the first and a discount fee's is present
+
+		double minPrice = 1.49 * (1-(Fare.RECURRING_FEE_BENEFIT/100));  
+		double maxPrice = 1.51 * (1-(Fare.RECURRING_FEE_BENEFIT/100));  
+		
+		//GIVEN
+		testCarEnterAndExitYesterday();
+		testCarEnter1hourAgo();
+		
+		//WHEN
+		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		parkingService.processExitingVehicle();
+
+		//THEN
+		Ticket ticket = new Ticket();
+		ticket = ticketDAO.getLastTicket("ABCDEF");
+		// check that the fare is correctly generated with discount
+		assertThat(ticket.getPrice()).isBetween(minPrice, maxPrice);
+		assertThat(ticket.getNumberEntry()).isGreaterThan(1);
+
+	}
+
+	@Test
+	public void processExitingVehicle_aCarEnterOneHourAgoForTheFirstTime_returnFeeWithoutDiscount() {
+		// A car enter in the park one hour ago for the first time and exit now. No discount on the fee
+
+		double minPrice = 1.49;
+		double maxPrice = 1.51;
+		
+		//GIVEN
+		testCarEnter1hourAgo();
+
+		//WHEN
+		ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+		parkingService.processExitingVehicle();
+
+		//THEN
+		Ticket ticket = new Ticket();
+		ticket = ticketDAO.getLastTicket("ABCDEF");
+		// check that the fare is correctly generated. it must be 1.5
+		assertThat(ticket.getPrice()).isBetween(minPrice, maxPrice);
+		assertThat(ticket.getNumberEntry()).isEqualTo(1);
+
+	}
+	
+	
 }

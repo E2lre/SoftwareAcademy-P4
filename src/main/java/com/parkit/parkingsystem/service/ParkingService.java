@@ -21,6 +21,11 @@ public class ParkingService {
 	private InputReaderUtil inputReaderUtil;
 	private ParkingSpotDAO parkingSpotDAO;
 	private TicketDAO ticketDAO;
+	boolean reduction = false;
+
+	public boolean getReduction() {
+		return reduction;
+	}
 
 	public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO, TicketDAO ticketDAO) {
 		this.inputReaderUtil = inputReaderUtil;
@@ -29,7 +34,9 @@ public class ParkingService {
 	}
 
 	public void processIncomingVehicle() {
+		this.reduction = false;
 		try {
+			
 			ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
 			if (parkingSpot != null && parkingSpot.getId() > 0) {
 				String vehicleRegNumber = getVehichleRegNumber();
@@ -51,11 +58,12 @@ public class ParkingService {
 				System.out.println("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
 				// EL2re : Adding detection for fee reduction
 				if (ticketDAO.numberOfTicket(vehicleRegNumber) > 1) {
+					this.reduction = true;
 					System.out.println(
 							"Welcome back! As a recurring user of our parking lot, you'll benefit from a "+Fare.RECURRING_FEE_BENEFIT+"% discount.");
-				}
+				}	
 			}
-
+			
 		} catch (Exception e) {
 			logger.error("Unable to process incoming vehicle", e);
 		}
